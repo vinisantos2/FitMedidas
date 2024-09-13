@@ -1,0 +1,7 @@
+export const TELA_LOGIN = "Login"
+export const TELA_HOME = "Home"
+export const TELA_CADASTRO = "Cadastro"
+export const TELA_HISTORICO = "Histórico"
+export const TELA_DESEMPENHO = "Desempenh"
+export const TELA_NOVO_DESEMPENHO= "Novo Desempenho"
+export const TELA_COMPARACAO = "Comparação"
