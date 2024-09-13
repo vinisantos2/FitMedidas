@@ -22,7 +22,8 @@ import Carregando from "../components/Carregando";
 import MaskInput, { Masks } from "react-native-mask-input";
 import ItemViewMedida from "../components/ItemViewMedida";
 import { DARK, VERMELHO } from "../constants/Cores";
-export default function CadastrarDesempenho() {
+import { getPassword } from "../utils/Ultils";
+export default function CadastrarDesempenho({ route, navigation }) {
 
     const [data, setData] = React.useState("")
     //lado esquerdo
@@ -53,18 +54,11 @@ export default function CadastrarDesempenho() {
     const [carregando, setCarregando] = React.useState(false)
     const gestor = new GestorDados()
 
+    console.log(route.params === undefined)
 
-    function getPassword() {
-        var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ!@#$%^&*()+?><:{}[]";
-        var passwordLength = 16;
-        var password = "";
+   // const { medida } = route.params !== null ? route.params : "";
 
-        for (var i = 0; i < passwordLength; i++) {
-            var randomNumber = Math.floor(Math.random() * chars.length);
-            password += chars.substring(randomNumber, randomNumber + 1);
-        }
-        return password;
-    }
+   // console.log(medida)
 
     function limpar() {
         setPunhoE("")
@@ -124,12 +118,11 @@ export default function CadastrarDesempenho() {
         const docData = medida.toMap()
         await gestor.adicionar(TABELA_DESEMPENHO, docData);
         limpar()
-
     }
 
     return (
         <Layout>
-            <View style={{alignItems: "center", backgroundColor: DARK}}>
+            <View style={{ alignItems: "center", backgroundColor: DARK }}>
                 <TextView value={msgErro} cor={VERMELHO} />
             </View>
 

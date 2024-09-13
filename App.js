@@ -7,25 +7,22 @@ import { BODY, BRANCO, CORPRIMARY, LEGENDA, VERMELHO } from './src/constants/Cor
 import React from 'react';
 import {
   TELA_CADASTRO, TELA_COMPARACAO,
-  TELA_DESEMPENHO,
+  TELA_EDITAR_DESEMPENHO,
   TELA_HISTORICO, TELA_HOME, TELA_LOGIN,
   TELA_NOVO_DESEMPENHO
 } from './src/constants/Rotas';
 import Home from './src/tamplates/Home';
 import TelaCadastro from './src/tamplates/Cadastro';
-import Historico from './src/tamplates/Historico';
-import Comparacao from './src/tamplates/Comparacao';
+
 import TelaLogin from './src/tamplates/Login';
-import CadastrarDesempenho from './src/tamplates/CadastrarDesempenho';
+
 import { auth } from './src/firebase/firebaseConfig';
 import ButtonLogout from './src/components/ButtonLogout';
 import { onAuthStateChanged } from 'firebase/auth';
 import MenuComponent from './src/components/Menu';
+import DrawerNavigator from './src/Rota/DrawerNavigator';
+import StackNavigator from './src/Rota/StackNavigator';
 
-
-
-
-const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -57,58 +54,17 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer  theme={{ colors: { card: CORPRIMARY, border: CORPRIMARY, text: BRANCO, notification: BRANCO, background: BODY, primary: BRANCO} }}>
-      {!logado ? (
-        <Stack.Navigator initialRouteName={TELA_LOGIN}>
-          <Stack.Screen name={TELA_LOGIN} component={TelaLogin} />
-          <Stack.Screen name={TELA_CADASTRO} component={TelaCadastro} />
+    <NavigationContainer theme={{ colors: { card: CORPRIMARY, border: CORPRIMARY, text: BRANCO, notification: BRANCO, background: BODY, primary: BRANCO } }}>
 
-        </Stack.Navigator>
-      ) : (
-        <Drawer.Navigator initialRouteName={TELA_HOME}>
+      {!logado ? 
+        <StackNavigator />
 
-          <Drawer.Screen
-            name={TELA_HOME}
-            component={Home}
-            options={{
-              // headerTitle: (props) => <LogoTitle {...props} />,
-              headerRight: () => (
-                <MenuComponent />
-              ),
-            }} />
+       : (
 
-          <Drawer.Screen
-            name={TELA_HISTORICO}
-            component={Historico}
-            options={{
-              // headerTitle: (props) => <LogoTitle {...props} />,
-              headerRight: () => (
-                <ButtonLogout />
-              ),
-            }}
-          />
-          <Drawer.Screen
-            name={TELA_COMPARACAO}
-            component={Comparacao}
-            options={{
-              // headerTitle: (props) => <LogoTitle {...props} />,
-              headerRight: () => (
-                <ButtonLogout />
-              ),
-            }}
-          />
+        <DrawerNavigator />
+      )
 
-          <Drawer.Screen
-            name={TELA_NOVO_DESEMPENHO}
-            component={CadastrarDesempenho}
-            options={{
-              // headerTitle: (props) => <LogoTitle {...props} />,
-              headerRight: () => (
-                <ButtonLogout />
-              ),
-            }}
-          />
-        </Drawer.Navigator>)}
+      }
     </NavigationContainer>
   );
 }

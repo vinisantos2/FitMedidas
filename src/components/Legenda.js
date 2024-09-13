@@ -4,7 +4,7 @@ import { STYLES } from "../constants/Styles";
 
 export default function Legenda({ value }) {
     return (
-        <View style={[STYLES.viewLegenda]}>
+        <View style={STYLES.viewLegenda}>
             <TextView value={value} />
         </View>)
 }

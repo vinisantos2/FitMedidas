@@ -1,7 +1,6 @@
 import React from "react"
 import { Dimensions, StyleSheet } from "react-native"
 import { BODY, BRANCO, CORPRIMARY, DARK, LEGENDA } from "./Cores"
-import Legenda from "../components/Legenda"
 
 export const STYLES = StyleSheet.create({
     viewItem: {
@@ -22,10 +21,6 @@ export const STYLES = StyleSheet.create({
         width: "100%",
         justifyContent: "center",
 
-    },
-
-    viewItemLegenda: {
-        backgroundColor: LEGENDA,
     },
 
     centroVIew: {

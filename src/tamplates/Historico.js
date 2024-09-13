@@ -5,6 +5,7 @@ import GestorDados from "../firebase/Firestore.js";
 import { medidaClass } from "../firebase/Medidas.ts";
 import { useIsFocused } from "@react-navigation/native";
 import ItemMedidas from "../components/ItemMedidas.js";
+import { formatarData, ordenarDatas } from "../utils/Ultils.js";
 
 
 
@@ -20,17 +21,19 @@ export default function Historico({ navigation }) {
 
     }, [isFocused])
 
-    
+
 
     async function carregarDados() {
-        const array = await gestor.obterTodos()
+        let array = await gestor.obterTodos()
+
+        array = ordenarDatas(array)
         setDados(array)
     }
 
     return (
         <Layout>
 
-            <View style={{alignItems: "center"}}>
+            <View style={{ alignItems: "center" }}>
                 {dados.map((value) => {
 
                     const medida = medidaClass(value)
