@@ -1,12 +1,15 @@
 import React from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import {  StyleSheet, View } from "react-native";
 import Layout from "../components/Layout.js";
 import GestorDados from "../firebase/Firestore.js";
 import { Medida, medidaClass } from "../firebase/Medidas.ts";
 import { useIsFocused } from "@react-navigation/native";
-import RNPickerSelect from 'react-native-picker-select';
+
 import ItemComparacao from "../components/ItemComparacao.js";
 import Carregando from "../components/Carregando.js";
+import { ordenarDatas } from "../utils/Ultils.js";
+import { BODY, LEGENDA } from "../constants/Cores.js";
+import { Dropdown } from "../components/Dropdown.js";
 
 export default function Comparacao({ navigation }) {
 
@@ -28,21 +31,7 @@ export default function Comparacao({ navigation }) {
 
     }, [isFocused])
 
-    const Dropdown = ({ key, valor, click, placeHolder, array }) => {
-
-        return (
-            <RNPickerSelect
-                value={valor}
-                placeholder={{ label: placeHolder }}
-                onValueChange={click}
-
-
-                // onDonePress={click}
-                items={array}
-            />
-        );
-
-    };
+    
 
     function filtro1(valor) {
         console.log(valor)
@@ -84,7 +73,9 @@ export default function Comparacao({ navigation }) {
     }
 
     async function carregarDados() {
-        const array = await gestor.obterTodos()
+        let array = await gestor.obterTodos()
+
+        array = ordenarDatas(array)
 
         const array2 = []
         // array2.push({ key: "sd", label: "Data", value: ""})
@@ -100,7 +91,7 @@ export default function Comparacao({ navigation }) {
     }
 
     return (
-        <Layout>
+        <Layout onRefresh={false} refreshing={false}>
             {carregando ? (<Carregando />) : ""}
 
 
@@ -108,7 +99,6 @@ export default function Comparacao({ navigation }) {
                 <View style={styles.viewRow}>
                     <Dropdown placeHolder={"Data"} valor={valor1} click={e => filtro1(e)} array={arraySelect1} />
                     <ItemComparacao medida={medida1} />
-
                 </View>
                 <View style={styles.viewRow}>
                     <Dropdown placeHolder={"Data"} valor={valor2} click={e => filtro2(e)} array={arraySelect2} />
@@ -130,8 +120,13 @@ const styles = StyleSheet.create({
     },
 
     viewRow: {
-        backgroundColor: "#fff",
+        backgroundColor: LEGENDA,
         width: "49.5%",
-        borderLeftWidth: 1
+        borderLeftWidth: 1,
+    },
+
+    viewSelect: {
+        backgroundColor: "#000",
+        width: 10
     }
 })

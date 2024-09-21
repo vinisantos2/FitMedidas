@@ -1,9 +1,10 @@
 import { StyleSheet, View } from "react-native";
 import TextView from "./TextView";
 import { Medida } from "../firebase/Medidas";
-import { VIEW_ABDOMEN, VIEW_ANTEBRACO, VIEW_BRACOCONTRAIDO, VIEW_BRACORELAXADO, VIEW_CINTURA, VIEW_COXAPROXIMAL, VIEW_DATA, VIEW_OMBRO, VIEW_PEITORAL, VIEW_PERNA, VIEW_PUNHO, VIEW_QUADRIL } from "../constants/Nomes";
+import { VIEW_ABDOMEN, VIEW_ANTEBRACO, VIEW_BRACOCONTRAIDO, VIEW_BRACORELAXADO, VIEW_CINTURA, VIEW_COXAPROXIMAL, VIEW_DATA, VIEW_OMBRO, VIEW_PEITORAL, VIEW_PERNA, VIEW_PESCOCO, VIEW_PESO, VIEW_PUNHO, VIEW_QUADRIL } from "../constants/Nomes";
 import { STYLES } from "../constants/Styles";
 import Legenda from "./Legenda";
+import { BODY, LEGENDA } from "../constants/Cores";
 
 
 export default function ItemComparacao({ medida = new Medida }) {
@@ -98,11 +99,18 @@ export default function ItemComparacao({ medida = new Medida }) {
                 </View>
 
                 <View style={styles.viewDE}>
+
+
+
                     <TextView value={medida.AT_COXA_PROXIMAL_E} />
                     <TextView value={medida.AT_COXA_PROXIMAL_D} />
 
                 </View>
 
+            </View>
+            <View style={styles.viewItem}>
+                <Legenda value={VIEW_PESO} />
+                <TextView value={medida.AT_PESO} />
             </View>
             <View style={styles.viewItem}>
                 <Legenda value={VIEW_OMBRO} />
@@ -133,18 +141,17 @@ export default function ItemComparacao({ medida = new Medida }) {
 const styles = StyleSheet.create({
 
     view: {
-        backgroundColor: "#000",
-
+        backgroundColor: BODY,
     },
 
     viewDE: {
         flexDirection: "row",
-        justifyContent: "space-evenly"
-
+        justifyContent: "space-evenly",
     },
 
     viewItem: {
-        alignItems: "center"
+        alignItems: "center",
+        justifyContent: "center"
     }
 
 })

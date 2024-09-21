@@ -2,9 +2,9 @@ import React from "react";
 import { StyleSheet, TextInput } from "react-native";
 
 
-export default function InputTextView({ value, onChangeText, placeholder, fontSize = 20 }) {
+export default function InputTextView({ disable, value, onChangeText, placeholder="", fontSize = 20 }) {
 
-    return <TextInput keyboardType="decimal-pad" value={value} maxLength={5} onChangeText={onChangeText} placeholder={placeholder} style={[styles.input]} />
+    return <TextInput editable={disable} keyboardType="decimal-pad" value={value} maxLength={5} onChangeText={onChangeText} placeholder={placeholder} style={[styles.input]} />
 
 }
 

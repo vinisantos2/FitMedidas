@@ -1,6 +1,6 @@
 export const CORPRIMARY = "#808080"
 export const BRANCO = "#FFF"
-export const LEGENDA = "#123"
+export const LEGENDA = "#123456"
 export const DARK = "#000"
-export const BODY = "#151515"
+export const BODY = "#808080"
 export const VERMELHO = "#EC5353"

@@ -3,22 +3,25 @@ import { Dimensions, StyleSheet } from "react-native"
 import { BODY, BRANCO, CORPRIMARY, DARK, LEGENDA } from "./Cores"
 
 export const STYLES = StyleSheet.create({
-    viewItem: {
+    viewItemLegenda: {
         borderTopWidth: .5,
         borderLeftWidth: .5,
         borderBottomWidth: 0.5,
         width: Dimensions.get("window").width * 0.3333,
         borderColor: DARK,
-        backgroundColor: BODY,
+        backgroundColor: LEGENDA,
         alignItems: "center",
-        textAlign: "center",
-        height: Dimensions.get("window").height * 0.075,
+        justifyContent: "center",
+        height: Dimensions.get("window").height * 0.1,
+    },
+
+    text: {
+        color: " #fff"
     },
 
     viewLegenda: {
         flexDirection: "row",
-        backgroundColor: LEGENDA,
-        width: "100%",
+
         justifyContent: "center",
 
     },
@@ -47,12 +50,7 @@ export const STYLES = StyleSheet.create({
 
 
     },
-    viewBotao: {
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: 2
 
-    },
     dataInput: {
         backgroundColor: BRANCO,
         width: "70%",
@@ -65,7 +63,7 @@ export const STYLES = StyleSheet.create({
 
     legenda: {
         flexDirection: "row",
-        backgroundColor: CORPRIMARY,
+        backgroundColor: LEGENDA,
         justifyContent: "center",
         alignContent: "center"
     }

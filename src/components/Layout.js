@@ -1,15 +1,15 @@
 import React from "react";
-import { StyleSheet, } from "react-native";
+import { RefreshControl, StyleSheet, } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { CORPRIMARY } from "../constants/Cores";
+import { BODY, CORPRIMARY } from "../constants/Cores";
 
 
-export default function Layout({ ...outros }) {
+export default function Layout({ refreshing, onRefresh, ...outros }) {
 
     return (
-        <ScrollView style={styles.container} {...outros}  >
-
-
+        <ScrollView
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            style={styles.container} {...outros}  >
         </ScrollView>
     )
 
@@ -19,7 +19,7 @@ export default function Layout({ ...outros }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: CORPRIMARY,
+        backgroundColor: BODY,
 
     }
 })

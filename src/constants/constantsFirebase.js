@@ -1,4 +1,4 @@
-export const TABELA_USERS = "users"
+
 export const TABELA_DESEMPENHO = "desempenho"
 export const AT_ID = "AT_ID"
 export const AT_DATA = "AT_DATA"
@@ -24,4 +24,11 @@ export const AT_PEITORAL = "AT_PEITORAL"
 export const AT_ABDOMEM = "AT_ABDOMEM"
 export const AT_CINTURA = "AT_CINTURA"
 export const AT_QUADRIL = "AT_QUADRIL"
+export const AT_PESO = "AT_PESO"
+
+
+//atrubutos users
+export const TABELA_USERS = "users"
+export const AT_NOME = "AT_NOME"
+export const AT_ALTURA = "AT_ALTURA"
 

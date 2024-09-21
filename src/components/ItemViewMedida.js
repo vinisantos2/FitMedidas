@@ -27,25 +27,23 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         backgroundColor: LEGENDA,
         width: "100%",
-        height: "40",
         justifyContent: "center",
-
     },
 
     viewBody: {
         height: "60%",
-        justifyContent: "center"
+        justifyContent: "center",
     },
 
     viewItem: {
         borderTopWidth: .5,
         borderLeftWidth: .5,
-        borderBottomWidth: 0.5,
+        borderBottomWidth: .5,
         width: Dimensions.get("window").width * 0.3333,
         borderColor: DARK,
         backgroundColor: BODY,
         alignItems: "center",
         textAlign: "center",
-        height: Dimensions.get("window").height * 0.075,
+        height: Dimensions.get("window").height * 0.1,
     },
 })

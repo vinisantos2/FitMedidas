@@ -1,56 +1,111 @@
 import React from "react";
-import { View, StyleSheet, Image, ImageBackground } from "react-native";
-import Layout from "../components/Layout";
-import TextView from "../components/TextView.js";
-import ButtonView from "../components/ButtonView.js";
-import InputTextView from "../components/InputTextView.js";
+import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
+import Layout from "../components/Layout.js";
+import TextView from "../components/TextView";
 import {
     VIEW_ABDOMEN,
     VIEW_ANTEBRACO,
     VIEW_BRACOCONTRAIDO,
     VIEW_BRACORELAXADO,
-    VIEW_CINTURA, VIEW_COXAPROXIMAL, VIEW_DATA, VIEW_OMBRO,
-    VIEW_PEITORAL, VIEW_PERNA, VIEW_PESCOCO, VIEW_PUNHO,
+    VIEW_CINTURA, VIEW_COXAPROXIMAL, VIEW_OMBRO,
+    VIEW_PEITORAL, VIEW_PERNA, VIEW_PUNHO,
     VIEW_QUADRIL
 } from "../constants/Nomes.js";
 import { STYLES } from "../constants/Styles.js";
 
-import { collection, addDoc, getDocs } from "firebase/firestore";
-import { TELA_CADASTRO, TELA_DESEMPENHO, TELA_LOGIN, TELA_NOVO_DESEMPENHO } from "../constants/Rotas.js";
-import { auth } from "../firebase/firebaseConfig";
-import GestorDados from "../firebase/Firestore";
-import { Medida } from "../firebase/Medidas";
+import GestorDados from "../firebase/Firestore.js";
 import { useIsFocused } from "@react-navigation/native";
 import ItemViewMedida from "../components/ItemViewMedida";
-import Carregando from "../components/Carregando";
-import Menu from "../components/Menu";
-import MenuComponent from "../components/Menu";
-import { DARK } from "../constants/Cores";
-let setado = false
-
+import Carregando from "../components/Carregando.js";
+import { ordenarDatas } from "../utils/Ultils.js";
+import { BODY } from "../constants/Cores.js";
+import { Usuario, usuarioClass } from "../firebase/Usuario";
+import ModallApp from "../components/Modal";
+import { AT_ALTURA, AT_ID, AT_NOME, TABELA_USERS } from "../constants/constantsFirebase.js";
+import { Medida } from "../firebase/Medidas";
+import { auth } from "../firebase/firebaseConfig.js";
+import { Ionicons } from "@expo/vector-icons";
+import { createTwoButtonAlert } from "../utils/AlertView.js";
+import { IMC, RQC } from "../constants/Texto.js";
 export default function Home({ navigation }) {
-    const [medida, setMedida] = React.useState(new Medida())
+    const [medida, setMedida] = React.useState(new Medida)
+    const [usuario, setUsuario] = React.useState(undefined)
     const [carregando, setCarregando] = React.useState(true)
-    const isFocused = useIsFocused()
+    const [altura, setAltura] = React.useState("")
+    const [imc, setImc] = React.useState("")
+    const [refreshing, setRefreshing] = React.useState(false);
+    const [nome, setNome] = React.useState("")
+
     const gestor = new GestorDados()
+    const isFocused = useIsFocused()
     React.useEffect(() => {
         buscar()
     }, [isFocused])
 
     async function buscar() {
 
-        const array = await gestor.obterTodos()
+        let array = await gestor.obterTodos()
+        array = ordenarDatas(array)
         const medida = array[0]
         setCarregando(false)
         if (!medida) return;
-
         setMedida(medida)
+        buscarDadosUsuario(medida)
+    }
+    const onRefresh = React.useCallback(async () => {
+        setRefreshing(true);
+        await buscar()
+        setRefreshing(false)
+    }, []);
+
+    async function buscarDadosUsuario(medida) {
+        let data = await gestor.buscar(TABELA_USERS, AT_ID, auth.currentUser.uid,)
+        const usuario = usuarioClass(data)
+        setUsuario(usuario)
+        setAltura(usuario.AT_ALTURA)
+        setNome(usuario.AT_NOME)
+        calculImc(usuario, medida)
     }
 
+    function calculImc(usuario, medida) {
+
+        let altura1 = parseFloat(usuario.AT_ALTURA);
+        let peso1 = parseFloat(medida.AT_PESO);
+        let imc1 = peso1 / (altura1 * altura1);
+        setCarregando(false)
+        setImc((imc1).toFixed(2));
+    }
+
+
+
     return (
-        <Layout>
+        <Layout refreshing={refreshing} onRefresh={onRefresh}>
 
             {carregando ? (<Carregando />) : ""}
+
+            <View style={STYLES.legenda} >
+                <TextView value={"Dados pessoais"} />
+            </View>
+
+            <View style={{
+                flexDirection: "row",
+                justifyContent: "space-around",
+                backgroundColor: BODY,
+                alignItems: "center"
+            }} >
+
+                <View style={[{ flexDirection: "row", }]} >
+                    <TextView value={"Nome: "} />
+                    <TextView value={nome} />
+                </View>
+
+                <View style={[{ flexDirection: "row", }]}>
+                    <TextView value={"Altura: "} />
+                    <TextView value={altura} />
+                </View>
+                {usuario ? (<ModallApp usuario={usuario} closeModal={() => buscarDadosUsuario()} />) : ""}
+
+            </View>
 
 
             <View style={STYLES.legenda} >
@@ -58,106 +113,142 @@ export default function Home({ navigation }) {
                 <TextView fontSize={20} value={medida.AT_DATA} />
             </View>
 
-           
+
 
             <View style={STYLES.container}>
 
                 <View style={STYLES.viewLeft}>
-                    <View style={[STYLES.viewItem, STYLES.viewItemLegenda]}>
+                    <View style={[STYLES.viewItemLegenda]}>
                         <TextView style={STYLES.text} value="Lado Esquerdo" />
                     </View>
                     {/* Lado esquerdo */}
                     <ItemViewMedida value={VIEW_BRACOCONTRAIDO}
-                        render={(<TextView value={medida.AT_BRACO_CONTRAIDO_E} fontSize={15} />)} />
+                        render={(<TextView value={medida.AT_BRACO_CONTRAIDO_E} />)} />
 
                     <ItemViewMedida value={VIEW_BRACORELAXADO}
-                        render={(<TextView value={medida.AT_BRACO_RELAXADO_E} fontSize={15} />)} />
+                        render={(<TextView value={medida.AT_BRACO_RELAXADO_E} />)} />
 
                     <ItemViewMedida value={VIEW_ANTEBRACO}
-                        render={(<TextView value={medida.AT_ANTEBRACO_E} fontSize={15} />)} />
+                        render={(<TextView value={medida.AT_ANTEBRACO_E} />)} />
 
                     <ItemViewMedida value={VIEW_PUNHO}
-                        render={(<TextView value={medida.AT_PUNHO_E} fontSize={15} />)} />
+                        render={(<TextView value={medida.AT_PUNHO_E} />)} />
 
                     <ItemViewMedida value={VIEW_COXAPROXIMAL}
-                        render={(<TextView value={medida.AT_COXA_PROXIMAL_E} fontSize={15} />)} />
+                        render={(<TextView value={medida.AT_COXA_PROXIMAL_E} />)} />
 
                     <ItemViewMedida value={VIEW_PERNA}
-                        render={(<TextView value={medida.AT_PERNA_E} fontSize={15} />)} />
+                        render={(<TextView value={medida.AT_PERNA_E} />)} />
 
 
                 </View>
                 <View style={STYLES.centroVIew}>
 
-                    <View style={[STYLES.viewItem, STYLES.viewItemLegenda]}>
+                    <View style={[STYLES.viewItemLegenda, STYLES.viewItemLegenda]}>
                         <TextView style={STYLES.text} value="Centro" />
                     </View>
 
 
                     {/* Centro */}
-
-                    <ItemViewMedida value={VIEW_PESCOCO}
-                        render={(<TextView value={"-"} fontSize={15} />)} />
+                    <ItemViewMedida value={"Peso"}
+                        render={(<TextView value={medida.AT_PESO} />)} />
                     <ItemViewMedida value={VIEW_OMBRO}
-                        render={(<TextView value={medida.AT_OMBRO} fontSize={15} />)} />
+                        render={(<TextView value={medida.AT_OMBRO} />)} />
                     <ItemViewMedida value={VIEW_PEITORAL}
-                        render={(<TextView value={medida.AT_PEITORAL} fontSize={15} />)} />
+                        render={(<TextView value={medida.AT_PEITORAL} />)} />
                     <ItemViewMedida value={VIEW_ABDOMEN}
-                        render={(<TextView value={medida.AT_ABDOMEM} fontSize={15} />)} />
+                        render={(<TextView value={medida.AT_ABDOMEM} />)} />
                     <ItemViewMedida value={VIEW_CINTURA}
-                        render={(<TextView value={medida.AT_CINTURA} fontSize={15} />)} />
+                        render={(<TextView value={medida.AT_CINTURA} />)} />
                     <ItemViewMedida value={VIEW_QUADRIL}
-                        render={(<TextView value={medida.AT_QUADRIL} fontSize={15} />)} />
+                        render={(<TextView value={medida.AT_QUADRIL} />)} />
 
 
                 </View>
 
                 <View style={STYLES.viewRight}>
-                    <View style={[STYLES.viewItem, STYLES.viewItemLegenda]}>
+                    <View style={[STYLES.viewItemLegenda, STYLES.viewItemLegenda]}>
                         <TextView style={STYLES.text} value="Lado Direito" />
                     </View>
 
                     {/* Lado direito */}
 
                     <ItemViewMedida value={VIEW_BRACOCONTRAIDO}
-                        render={(<TextView value={medida.AT_BRACO_CONTRAIDO_D} fontSize={15} />)} />
+                        render={(<TextView value={medida.AT_BRACO_CONTRAIDO_D} />)} />
 
                     <ItemViewMedida value={VIEW_BRACORELAXADO}
-                        render={(<TextView value={medida.AT_BRACO_RELAXADO_D} fontSize={15} />)} />
+                        render={(<TextView value={medida.AT_BRACO_RELAXADO_D} />)} />
 
                     <ItemViewMedida value={VIEW_ANTEBRACO}
-                        render={(<TextView value={medida.AT_ANTEBRACO_D} fontSize={15} />)} />
+                        render={(<TextView value={medida.AT_ANTEBRACO_D} />)} />
 
                     <ItemViewMedida value={VIEW_PUNHO}
-                        render={(<TextView value={medida.AT_PUNHO_D} fontSize={15} />)} />
+                        render={(<TextView value={medida.AT_PUNHO_D} />)} />
 
                     <ItemViewMedida value={VIEW_COXAPROXIMAL}
-                        render={(<TextView value={medida.AT_COXA_PROXIMAL_D} fontSize={15} />)} />
+                        render={(<TextView value={medida.AT_COXA_PROXIMAL_D} />)} />
 
                     <ItemViewMedida value={VIEW_PERNA}
-                        render={(<TextView value={medida.AT_PERNA_D} fontSize={15} />)} />
+                        render={(<TextView value={medida.AT_PERNA_D} />)} />
 
                 </View>
             </View>
+
+
             <View style={STYLES.legenda} >
-                <TextView value={"Dados pessoais"} />
+                <TextView value={"Calculos"} />
             </View>
 
-            <View style={[{ flexDirection: "row", }]} >
-                <ItemViewMedida value={"Peso"} render={(<TextView value={"valor"} />)} />
-                <ItemViewMedida value={"Altura"} render={(<TextView value={"valor"} />)} />
-                <ItemViewMedida value={"IMC"} render={(<TextView value={"valor"} />)} />
+
+            <View style={[styles.viewItemCalculo]} >
+                <View style={STYLES.legenda}>
+                    <TextView value={"IMC:"} />
+                </View>
+                <View style={styles.calculo}>
+                    <TextView value={imc} />
+                </View>
+                <TouchableOpacity onPress={() => createTwoButtonAlert("IMC", IMC)} >
+                    <Ionicons name="warning-outline" size={30} />
+                </TouchableOpacity>
             </View>
+            <View style={styles.viewItemCalculo} >
+                <View style={STYLES.legenda}>
+                    <TextView value={"RCQ:"} />
+                </View>
+                <View style={styles.calculo}>
+                    <TextView value={medida.AT_QUADRIL / medida.AT_CINTURA} />
+                </View>
 
-            {/* <View style={STYLES.viewBotao}>
-                <ButtonView onPress={() => navigation.navigate(TELA_NOVO_DESEMPENHO)} value={"Cadastrar Novo"} />
-            </View> */}
-            <View >
-                <ItemViewMedida value={"quadril/cintura"} render={(<TextView value={medida.AT_QUADRIL / medida.AT_CINTURA} />)} />
-
+                <TouchableOpacity onPress={() => createTwoButtonAlert("RQC", RQC)} >
+                    <Ionicons name="warning-outline" size={30} />
+                </TouchableOpacity>
             </View>
 
         </Layout>
     )
 
+
 }
+
+const styles = StyleSheet.create({
+
+    viewItemCalculo: {
+        flexDirection: "row",
+        width: "50%",
+        backgroundColor: BODY,
+        width: "100%",
+        justifyContent: "space-between",
+        borderWidth: .5,
+    },
+
+    calculo: {
+        marginLeft: 5
+    },
+    viewCalculos: {
+        flexDirection: "row",
+        backgroundColor: BODY,
+        justifyContent: "space-between"
+
+    }
+
+})

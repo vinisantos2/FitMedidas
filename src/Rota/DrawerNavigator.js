@@ -12,6 +12,7 @@ import {
 } from '../constants/Rotas';
 import Historico from '../tamplates/Historico';
 import Comparacao from '../tamplates/Comparacao';
+import { StackNavigator2, StackNavigator3 } from './StackNavigator';
 
 
 const Drawer = createDrawerNavigator();
@@ -24,13 +25,13 @@ export default function DrawerNavigator() {
                 options={{
                     // headerTitle: (props) => <LogoTitle {...props} />,
                     headerRight: () => (
-                        <MenuComponent />
+                        <ButtonLogout />
                     ),
                 }} />
 
             <Drawer.Screen
                 name={TELA_HISTORICO}
-                component={Historico}
+                component={StackNavigator2}
                 options={{
                     // headerTitle: (props) => <LogoTitle {...props} />,
                     headerRight: () => (
@@ -60,16 +61,7 @@ export default function DrawerNavigator() {
                 }}
             />
 
-            <Drawer.Screen
-                name={TELA_EDITAR_DESEMPENHO}
-                component={CadastrarDesempenho}
-                options={{
-                    // headerTitle: (props) => <LogoTitle {...props} />,
-                    headerRight: () => (
-                        <ButtonLogout />
-                    ),
-                }}
-            />
+
         </Drawer.Navigator>
     )
 }

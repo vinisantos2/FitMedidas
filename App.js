@@ -1,25 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer, useIsFocused } from '@react-navigation/native';
+import { StyleSheet, } from 'react-native';
+import { NavigationContainer, } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { BODY, BRANCO, CORPRIMARY, LEGENDA, VERMELHO } from './src/constants/Cores';
+import { BRANCO, LEGENDA, } from './src/constants/Cores';
 import React from 'react';
-import {
-  TELA_CADASTRO, TELA_COMPARACAO,
-  TELA_EDITAR_DESEMPENHO,
-  TELA_HISTORICO, TELA_HOME, TELA_LOGIN,
-  TELA_NOVO_DESEMPENHO
-} from './src/constants/Rotas';
-import Home from './src/tamplates/Home';
-import TelaCadastro from './src/tamplates/Cadastro';
-
-import TelaLogin from './src/tamplates/Login';
-
 import { auth } from './src/firebase/firebaseConfig';
-import ButtonLogout from './src/components/ButtonLogout';
 import { onAuthStateChanged } from 'firebase/auth';
-import MenuComponent from './src/components/Menu';
+
 import DrawerNavigator from './src/Rota/DrawerNavigator';
 import StackNavigator from './src/Rota/StackNavigator';
 
@@ -54,15 +41,17 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer theme={{ colors: { card: CORPRIMARY, border: CORPRIMARY, text: BRANCO, notification: BRANCO, background: BODY, primary: BRANCO } }}>
 
-      {!logado ? 
+
+    <NavigationContainer theme={{ colors: { card: LEGENDA, border: LEGENDA, text: BRANCO, notification: BRANCO, background: LEGENDA, primary: BRANCO } }}>
+      <StatusBar backgroundColor={LEGENDA} />
+      {!logado ?
         <StackNavigator />
 
-       : (
+        : (
 
-        <DrawerNavigator />
-      )
+          <DrawerNavigator />
+        )
 
       }
     </NavigationContainer>

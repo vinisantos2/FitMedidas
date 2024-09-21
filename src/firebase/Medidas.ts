@@ -1,8 +1,9 @@
-import { AT_ABDOMEM, AT_ANTEBRACO_D, AT_ANTEBRACO_E, AT_BRACO_CONTRAIDO_D, AT_BRACO_CONTRAIDO_E, AT_BRACO_RELAXADO_D, AT_BRACO_RELAXADO_E, AT_CINTURA, AT_COXA_PROXIMAL_D, AT_COXA_PROXIMAL_E, AT_DATA, AT_ID, AT_OMBRO, AT_PEITORAL, AT_PERNA_D, AT_PERNA_E, AT_PUNHO_D, AT_PUNHO_E, AT_QUADRIL } from "../constants/constantsFirebase"
+import { Key } from "react"
+import { AT_ABDOMEM, AT_ANTEBRACO_D, AT_ANTEBRACO_E, AT_BRACO_CONTRAIDO_D, AT_BRACO_CONTRAIDO_E, AT_BRACO_RELAXADO_D, AT_BRACO_RELAXADO_E, AT_CINTURA, AT_COXA_PROXIMAL_D, AT_COXA_PROXIMAL_E, AT_DATA, AT_ID, AT_OMBRO, AT_PEITORAL, AT_PERNA_D, AT_PERNA_E, AT_PESO, AT_PUNHO_D, AT_PUNHO_E, AT_QUADRIL } from "../constants/constantsFirebase"
 
 export class Medida {
-    AT_ID: String
-    AT_DATA: String
+    AT_ID: Key
+    AT_DATA: string
     //esquerdo
     AT_PUNHO_E: String
     AT_ANTEBRACO_E: String
@@ -23,13 +24,11 @@ export class Medida {
     AT_ABDOMEM: String
     AT_CINTURA: String
     AT_QUADRIL: String
-
-
-
+    AT_PESO: String
 
     constructor(
-        AT_ID: String,
-        AT_DATA: String,
+        AT_ID: Key,
+        AT_DATA: string,
         AT_PUNHO_E: String,
         AT_ANTEBRACO_E: String,
         AT_PERNA_E: String,
@@ -46,7 +45,8 @@ export class Medida {
         AT_PEITORAL: String,
         AT_ABDOMEM: String,
         AT_CINTURA: String,
-        AT_QUADRIL: String
+        AT_QUADRIL: String,
+        AT_PESO: String
     ) {
         this.AT_ID = AT_ID
         this.AT_DATA = AT_DATA
@@ -67,6 +67,7 @@ export class Medida {
         this.AT_ABDOMEM = AT_ABDOMEM
         this.AT_CINTURA = AT_CINTURA
         this.AT_QUADRIL = AT_QUADRIL
+        this.AT_PESO = AT_PESO
     }
 
 
@@ -96,6 +97,7 @@ export class Medida {
             AT_ABDOMEM: this.AT_ABDOMEM,
             AT_CINTURA: this.AT_CINTURA,
             AT_QUADRIL: this.AT_QUADRIL,
+            AT_PESO: this.AT_PESO,
         }
 
     }
@@ -130,10 +132,9 @@ export function medidaClass(data) {
         data[AT_ABDOMEM],
         data[AT_CINTURA],
         data[AT_QUADRIL],
+        data[AT_PESO],
     )
-
     //  console.log(medida)
 
     return medida
 }
-

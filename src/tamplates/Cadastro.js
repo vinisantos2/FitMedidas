@@ -53,7 +53,6 @@ export default function TelaCadastro({ navigation }) {
             </View>
             <View style={styles.viewBotao}>
 
-
                 <TouchableOpacity onPress={() => criarUsuario()} style={styles.botao}>
                     <TextView fontSize={25} value="Cadastre-se" />
                 </TouchableOpacity>

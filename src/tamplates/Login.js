@@ -1,36 +1,43 @@
 import React from "react";
-import { ActivityIndicator, Alert, Button, Image, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from "react-native";
-import Layout from "../components/Layout";
-import TextView from "../components/TextView";
-import { auth } from "../firebase/firebaseConfig";
-import {
+import { Image, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
+import TextView from "../components/TextView";
+import { app, auth } from "../firebase/firebaseConfig";
+
+import {
+    GoogleAuthProvider,
+    onAuthStateChanged,
     signInWithEmailAndPassword,
-    onAuthStateChanged
+    signInWithPopup,
+
+
 } from "firebase/auth";
-import { TELA_HOME, TELA_LOGIN } from "../constants/Rotas";
 import { useIsFocused } from "@react-navigation/native";
-import ModallApp from "../components/Modal";
 import { VERMELHO } from "../constants/Cores";
 import Layout2 from "../components/Layout2";
+import { ModallCarregando } from "../components/ModalCarregando";
+import { TELA_CADASTRO } from "../constants/Rotas";
+
+
+
 
 export default function TelaLogin({ navigation }) {
     const [email, setEmail] = React.useState("")
-    const [nome, setNome] = React.useState("")
+
     const [password, setSenha] = React.useState("")
     const [msgErro, setMsgErro] = React.useState("")
     const [carregando, setCarregando] = React.useState(true)
     const isFocused = useIsFocused()
 
+
     React.useEffect(() => {
         estaLogado()
+
     }, [isFocused])
 
     function estaLogado() {
         onAuthStateChanged(auth, (user) => {
             if (user) {
-              
-
                 setCarregando(true)
                 // User is signed in, see docs for a list of available properties
                 // https://firebase.google.com/docs/reference/js/auth.user
@@ -45,8 +52,33 @@ export default function TelaLogin({ navigation }) {
         });
     }
 
+    // async function logarComGoogle() {
+    // const provider = new GoogleAuthProvider(app); //google
+    //     signInWithPopup(auth, provider )
+    //     await (auth, provider)
+    //         .then((result) => {
+    //             // This gives you a Google Access Token. You can use it to access the Google API.
+    //             const credential = GoogleAuthProvider.credentialFromResult(result);
+    //             const token = credential.accessToken;
+    //             // The signed-in user info.
+    //             const user = result.user;
+    //             // IdP data available using getAdditionalUserInfo(result)
+    //             // ...
+    //         }).catch((error) => {
+    //             // Handle Errors here.
+    //             const errorCode = error.code;
+    //             const errorMessage = error.message;
+    //             // The email of the user's account used.
+    //             const email = error.customData.email;
+    //             // The AuthCredential type that was used.
+    //             const credential = GoogleAuthProvider.credentialFromError(error);
+    //             // ...
+    //         });
 
-    function logar() {
+    // }
+
+
+    function logarEmailSenha() {
         setCarregando(true)
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
@@ -70,7 +102,7 @@ export default function TelaLogin({ navigation }) {
     return (
 
         <Layout2>
-            {carregando ? (<ModallApp />) : ""}
+            {carregando ? (<ModallCarregando />) : ""}
 
 
             <View style={styles.viewForm}>
@@ -78,21 +110,19 @@ export default function TelaLogin({ navigation }) {
                 <TextInput placeholder="Senha" style={[styles.input, styles.text]} passwordRules={password} value={password} onChangeText={setSenha} keyboardType="visible-password" />
 
             </View>
-
+            {/* 
             <View style={styles.viewBotoes} >
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => logarComGoogle()}>
                     <Image style={styles.imagemIcon} source={require("../../assets/google.webp")} />
                 </TouchableOpacity>
-
-
-            </View>
+            </View> */}
 
             <View style={styles.viewBotao}>
-                <TouchableOpacity onPress={() => logar()} style={styles.botao}>
+                <TouchableOpacity onPress={() => logarEmailSenha()} style={styles.botao}>
                     <TextView value="Logar" fontSize={25} />
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Cadastro')} style={styles.botao}>
+                <TouchableOpacity onPress={() => navigation.navigate(TELA_CADASTRO)} style={styles.botao}>
                     <TextView fontSize={25} value="Cadastre-se" />
                 </TouchableOpacity>
 
@@ -106,7 +136,7 @@ export default function TelaLogin({ navigation }) {
             </View>
 
             <View style={styles.viewLink}>
-                <TextView value={msgErro} cor={VERMELHO}/>
+                <TextView value={msgErro} cor={VERMELHO} />
             </View>
 
 
