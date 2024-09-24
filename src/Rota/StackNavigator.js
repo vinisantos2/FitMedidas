@@ -1,21 +1,17 @@
-
-
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { TELA_CADASTRO, TELA_EDITAR_DESEMPENHO, TELA_HISTORICO, TELA_HOME, TELA_LOGIN } from '../constants/Rotas';
+import { TELA_CADASTRO, TELA_EDITAR_DESEMPENHO, TELA_ESQUECI_SENHA, TELA_HISTORICO, TELA_HOME, TELA_LOGIN } from '../constants/Rotas';
 import TelaLogin from '../tamplates/Login';
 import TelaCadastro from '../tamplates/Cadastro';
 import CadastrarDesempenho from '../tamplates/CadastrarDesempenho';
 import Historico from '../tamplates/Historico';
-import TelaUsuario from '../tamplates/TelaUsuario';
-import Home from '../tamplates/Home';
-
-
+import TelaEsqueciSenha from '../tamplates/EsqueciSenha';
 const Stack = createNativeStackNavigator();
 export default function StackNavigator() {
     return (
         <Stack.Navigator initialRouteName={TELA_LOGIN}>
             <Stack.Screen name={TELA_LOGIN} component={TelaLogin} />
             <Stack.Screen name={TELA_CADASTRO} component={TelaCadastro} />
+            <Stack.Screen name={TELA_ESQUECI_SENHA} component={TelaEsqueciSenha} />
         </Stack.Navigator>
     )
 }

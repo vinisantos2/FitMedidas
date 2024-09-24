@@ -16,7 +16,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { VERMELHO } from "../constants/Cores";
 import Layout2 from "../components/Layout2";
 import { ModallCarregando } from "../components/ModalCarregando";
-import { TELA_CADASTRO } from "../constants/Rotas";
+import { TELA_CADASTRO, TELA_ESQUECI_SENHA } from "../constants/Rotas";
 import InputSenha, { Input } from "../components/Inputs";
 
 export default function TelaLogin({ navigation }) {
@@ -126,7 +126,7 @@ export default function TelaLogin({ navigation }) {
 
             <View style={styles.viewLink}>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                <TouchableOpacity onPress={() => navigation.navigate(TELA_ESQUECI_SENHA)}>
                     <TextView value={"Esqueci minha senha"} />
                 </TouchableOpacity>
             </View>
@@ -160,15 +160,7 @@ const styles = StyleSheet.create({
 
 
     },
-    input: {
-        width: "100%",
-        padding: 10,
-        fontSize: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: "#fff",
-        marginTop: 10
 
-    },
     viewBotao: {
         marginTop: "10%",
         alignItems: "center",
@@ -203,10 +195,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
 
     },
-    text: {
-        fontSize: 20,
-        color: "#fff"
-    },
+    
     imagemIcon: {
         width: 50,
         height: 50,

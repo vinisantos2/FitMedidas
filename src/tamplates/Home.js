@@ -19,7 +19,7 @@ import ItemViewMedida from "../components/ItemViewMedida";
 import Carregando from "../components/Carregando.js";
 import { ordenarDatas } from "../utils/Ultils.js";
 import { BODY } from "../constants/Cores.js";
-import { Usuario, usuarioClass } from "../firebase/Usuario";
+import {  usuarioClass } from "../firebase/Usuario";
 import ModallApp from "../components/Modal";
 import { AT_ALTURA, AT_ID, AT_NOME, TABELA_USERS } from "../constants/constantsFirebase.js";
 import { Medida } from "../firebase/Medidas";

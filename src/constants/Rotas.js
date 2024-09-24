@@ -1,4 +1,5 @@
 export const TELA_LOGIN = "Login"
+export const TELA_ESQUECI_SENHA = "Esqueci a senha"
 export const TELA_HOME = "Home"
 export const TELA_CADASTRO = "Cadastro"
 export const TELA_HISTORICO = "Histórico"
