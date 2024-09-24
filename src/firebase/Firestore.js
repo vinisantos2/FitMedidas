@@ -27,6 +27,16 @@ class GestorDados {
   }
 
 
+  async adicionarUsuer(tabela, docData) {
+    const ref = doc(db, tabela, auth.currentUser.uid);
+    await setDoc(ref,
+      docData
+    ).catch((erro) => {
+      console.log(erro)
+    })
+  }
+
+  
   async adicionar(tabela, docData) {
     const ref = doc(db, "user", auth.currentUser.uid, tabela, docData.AT_ID);
     await setDoc(ref,

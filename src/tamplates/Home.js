@@ -42,15 +42,21 @@ export default function Home({ navigation }) {
         buscar()
     }, [isFocused])
 
+
+
     async function buscar() {
 
         let array = await gestor.obterTodos()
         array = ordenarDatas(array)
         const medida = array[0]
-        setCarregando(false)
-        if (!medida) return;
+
+        if (!medida) {
+            buscarDadosUsuario()
+            return
+        }
         setMedida(medida)
         buscarDadosUsuario(medida)
+
     }
     const onRefresh = React.useCallback(async () => {
         setRefreshing(true);
@@ -59,7 +65,7 @@ export default function Home({ navigation }) {
     }, []);
 
     async function buscarDadosUsuario(medida) {
-        let data = await gestor.buscar(TABELA_USERS, AT_ID, auth.currentUser.uid,)
+        let data = await gestor.buscar(TABELA_USERS, AT_ID, auth.currentUser.uid)
         const usuario = usuarioClass(data)
         setUsuario(usuario)
         setAltura(usuario.AT_ALTURA)
@@ -68,12 +74,17 @@ export default function Home({ navigation }) {
     }
 
     function calculImc(usuario, medida) {
+        if (!medida) {
+            setCarregando(false)
+            return
+        }
 
         let altura1 = parseFloat(usuario.AT_ALTURA);
         let peso1 = parseFloat(medida.AT_PESO);
         let imc1 = peso1 / (altura1 * altura1);
         setCarregando(false)
         setImc((imc1).toFixed(2));
+        setCarregando(false)
     }
 
 
@@ -216,7 +227,7 @@ export default function Home({ navigation }) {
                     <TextView value={"RCQ:"} />
                 </View>
                 <View style={styles.calculo}>
-                    <TextView value={medida.AT_QUADRIL / medida.AT_CINTURA} />
+                    <TextView value={(medida.AT_CINTURA / medida.AT_QUADRIL).toFixed(2)} />
                 </View>
 
                 <TouchableOpacity onPress={() => createTwoButtonAlert("RQC", RQC)} >

@@ -1,10 +1,16 @@
 import React from "react";
 import { StyleSheet, TextInput } from "react-native";
+import MaskInput, { createNumberMask, Masks } from "react-native-mask-input";
 
 
-export default function InputTextView({ disable, value, onChangeText, placeholder="", fontSize = 20 }) {
+export default function InputTextView({ disable, value, onChangeText, placeholder = "", fontSize = 20 }) {
+    const decimalMask = createNumberMask({
+        
+        separator: '.',
+        precision: 1,
+    })
 
-    return <TextInput editable={disable} keyboardType="decimal-pad" value={value} maxLength={5} onChangeText={onChangeText} placeholder={placeholder} style={[styles.input]} />
+    return <MaskInput mask={decimalMask} editable={disable} keyboardType="decimal-pad" inputMode="decimal" value={value} maxLength={6} onChangeText={onChangeText} placeholder={placeholder} style={[styles.input]} />
 
 }
 

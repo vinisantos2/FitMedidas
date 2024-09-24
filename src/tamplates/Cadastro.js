@@ -1,20 +1,37 @@
 import React from "react";
-import { Button, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import Layout from "../components/Layout";
+import { Image, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+
 import TextView from "../components/TextView";
-import { createUserWithEmailAndPassword, getIdToken } from "firebase/auth";
-import { auth, db } from "../firebase/firebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/firebaseConfig";
 import { TABELA_USERS } from "../constants/constantsFirebase";
-import { setDoc, doc } from "firebase/firestore";
 import Layout2 from "../components/Layout2";
+import GestorDados from "../firebase/Firestore";
+import InputSenha, { Input } from "../components/Inputs";
+import MessageErro from "../components/MessageErro";
 
 
 export default function TelaCadastro({ navigation }) {
     const [email, setEmail] = React.useState("")
     const [nome, setNome] = React.useState("")
     const [senha, setSenha] = React.useState("")
+    const [viewSenha, setViewSenha] = React.useState(true)
+    const [senhaC, setSenhaC] = React.useState("")
+    const [viewSenhaC, setViewSenhaC] = React.useState(true)
+    const [msgErro, setMsgErro] = React.useState("")
+    const gestor = new GestorDados()
 
     function criarUsuario() {
+        if (nome.length < 1) {
+            setMsgErro("Campo nome invalido")
+            return
+        } else if (senha.length < 5) {
+            setMsgErro("Campo senha tem que ter mais de 5 caracter")
+            return
+        } else if (senha !== senhaC) {
+            setMsgErro("Senhas diferentes")
+            return
+        }
         createUserWithEmailAndPassword(auth, email, senha)
             .then((userCredential) => {
                 // Signed in 
@@ -27,21 +44,23 @@ export default function TelaCadastro({ navigation }) {
                 const errorMessage = error.message;
 
                 console.log(errorCode + "===" + errorMessage)
+                setMsgErro(errorCode)
                 // ..
             });
     }
 
     async function castrarUsuario(uid) {
-        const ref = doc(db, TABELA_USERS, uid);
-        setDoc(ref, { nome: nome, })
+        const docData = { AT_ID: uid, AT_NOME: nome }
+        gestor.adicionarUsuer(TABELA_USERS, docData)
     }
     return (
         <Layout2>
+            <MessageErro msgErro={msgErro} />
             <View style={styles.viewForm}>
-                <TextInput placeholder={"nome"} style={[styles.input, styles.text]} value={nome} onChangeText={setNome} type={"ascii-capable"} />
-                <TextInput placeholder="E-mail" style={[styles.input, styles.text]} value={email} onChangeText={setEmail} keyboardType="ascii-capable" />
-                <TextInput placeholder="Senha" style={[styles.input, styles.text]} passwordRules={senha} value={senha} onChangeText={setSenha} keyboardType="visible-password" />
-
+                <Input placeholder={"Nome"} value={nome} setValue={setNome} />
+                <Input placeholder={"E-mail"} value={email} setValue={setEmail} keyboardType="email-address" />
+                <InputSenha placeholder={"Senha"} setValue={setSenha} value={senha} setView={setViewSenha} view={viewSenha} />
+                <InputSenha placeholder={"Confirmar senha"} setValue={setSenhaC} value={senhaC} setView={setViewSenhaC} view={viewSenhaC} />
             </View>
 
             <View style={styles.viewBotoes} >
@@ -52,7 +71,6 @@ export default function TelaCadastro({ navigation }) {
 
             </View>
             <View style={styles.viewBotao}>
-
                 <TouchableOpacity onPress={() => criarUsuario()} style={styles.botao}>
                     <TextView fontSize={25} value="Cadastre-se" />
                 </TouchableOpacity>
@@ -67,7 +85,6 @@ export default function TelaCadastro({ navigation }) {
 const styles = StyleSheet.create({
     content: {
         flex: 1,
-
     },
     viewBotoes: {
         marginTop: "10%",
@@ -77,12 +94,12 @@ const styles = StyleSheet.create({
     },
     viewForm: {
         marginTop: "10%",
-        alignItems: "center"
-
+        alignItems: "center",
+        width: "90%"
 
     },
     input: {
-        width: "90%",
+        width: "100%",
         padding: 10,
         fontSize: 20,
         borderBottomWidth: 1,

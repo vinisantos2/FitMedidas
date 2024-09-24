@@ -14,6 +14,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import GestorDados from '../firebase/Firestore';
 import { Usuario } from '../firebase/Usuario';
 import { VERMELHO } from '../constants/Cores';
+import MaskInput, { createNumberMask } from 'react-native-mask-input';
 
 
 const ModallApp = ({ usuario, closeModal }) => {
@@ -24,7 +25,7 @@ const ModallApp = ({ usuario, closeModal }) => {
 
   const gestor = new GestorDados()
   useEffect(() => {
-    
+
     setAltura(usuario.AT_ALTURA)
     setNome(usuario.AT_NOME)
   }, [isFocused]);
@@ -37,6 +38,11 @@ const ModallApp = ({ usuario, closeModal }) => {
     gestor.updateUser(docData)
     setModalVisible(!modalVisible)
   }
+
+  const decimalMask = createNumberMask({
+    separator: '.',
+    precision: 2,
+  })
 
   return (
     <View>
@@ -60,12 +66,15 @@ const ModallApp = ({ usuario, closeModal }) => {
               placeholder="Nome"
             />
 
-            <TextInput
+            <MaskInput
+              mask={decimalMask}
               style={styles.input}
               value={altura}
+
               onChangeText={setAltura}
-              keyboardType="ascii-capable"
-              placeholder="Profissão"
+              keyboardType="decimal-pad"
+              maxLength={4}
+              placeholder="Altura em Metros"
             />
             <View style={styles.viewBotoes}>
               <Pressable
@@ -96,7 +105,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: "#000",
     opacity: .95
-    
+
   },
 
   viewBotoes: {

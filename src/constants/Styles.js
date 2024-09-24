@@ -21,8 +21,9 @@ export const STYLES = StyleSheet.create({
 
     viewLegenda: {
         flexDirection: "row",
-
+        backgroundColor: LEGENDA,
         justifyContent: "center",
+        width: "100%"
 
     },
 

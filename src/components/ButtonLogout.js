@@ -1,4 +1,4 @@
-import { Button, StyleSheet, TouchableOpacity } from "react-native";
+import {  StyleSheet, TouchableOpacity } from "react-native";
 import { auth } from "../firebase/firebaseConfig";
 import { VERMELHO } from "../constants/Cores";
 import { TELA_LOGIN } from "../constants/Rotas";

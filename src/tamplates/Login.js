@@ -17,18 +17,15 @@ import { VERMELHO } from "../constants/Cores";
 import Layout2 from "../components/Layout2";
 import { ModallCarregando } from "../components/ModalCarregando";
 import { TELA_CADASTRO } from "../constants/Rotas";
-
-
-
+import InputSenha, { Input } from "../components/Inputs";
 
 export default function TelaLogin({ navigation }) {
     const [email, setEmail] = React.useState("")
-
-    const [password, setSenha] = React.useState("")
+    const [senha, setSenha] = React.useState("")
+    const [viewSenha, setViewSenha] = React.useState(true)
     const [msgErro, setMsgErro] = React.useState("")
     const [carregando, setCarregando] = React.useState(true)
     const isFocused = useIsFocused()
-
 
     React.useEffect(() => {
         estaLogado()
@@ -80,7 +77,7 @@ export default function TelaLogin({ navigation }) {
 
     function logarEmailSenha() {
         setCarregando(true)
-        signInWithEmailAndPassword(auth, email, password)
+        signInWithEmailAndPassword(auth, email, senha)
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
@@ -104,10 +101,9 @@ export default function TelaLogin({ navigation }) {
         <Layout2>
             {carregando ? (<ModallCarregando />) : ""}
 
-
             <View style={styles.viewForm}>
-                <TextInput placeholder="Login ou e-mail" style={[styles.input, styles.text]} value={email} onChangeText={setEmail} keyboardType="ascii-capable" />
-                <TextInput placeholder="Senha" style={[styles.input, styles.text]} passwordRules={password} value={password} onChangeText={setSenha} keyboardType="visible-password" />
+                <Input placeholder={"E-mail"} value={email} setValue={setEmail} keyboardType="email-address" />
+                <InputSenha placeholder={"Senha"} setValue={setSenha} value={senha} setView={setViewSenha} view={viewSenha} />
 
             </View>
             {/* 
@@ -139,8 +135,6 @@ export default function TelaLogin({ navigation }) {
                 <TextView value={msgErro} cor={VERMELHO} />
             </View>
 
-
-
         </Layout2>
 
 
@@ -161,12 +155,13 @@ const styles = StyleSheet.create({
     },
     viewForm: {
         marginTop: "10%",
-        alignItems: "center"
+        alignItems: "center",
+        width: "90%"
 
 
     },
     input: {
-        width: "90%",
+        width: "100%",
         padding: 10,
         fontSize: 20,
         borderBottomWidth: 1,
@@ -177,6 +172,7 @@ const styles = StyleSheet.create({
     viewBotao: {
         marginTop: "10%",
         alignItems: "center",
+        width: "90%"
     },
 
     viewLink: {
