@@ -1,13 +1,12 @@
-import {  StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { auth } from "../firebase/firebaseConfig";
 import { VERMELHO } from "../constants/Cores";
 import { TELA_LOGIN } from "../constants/Rotas";
 import TextView from "./TextView";
 
-export default function ButtonLogout() {
+export default function ButtonLogout({ nav }) {
     async function logout() {
         await auth.signOut();
-
     }
 
     return (

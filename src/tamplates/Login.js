@@ -16,9 +16,9 @@ import { useIsFocused } from "@react-navigation/native";
 import { VERMELHO } from "../constants/Cores";
 import Layout2 from "../components/Layout2";
 import { ModallCarregando } from "../components/ModalCarregando";
-import { TELA_CADASTRO, TELA_ESQUECI_SENHA } from "../constants/Rotas";
+import { TELA_CADASTRO, TELA_ESQUECI_SENHA, TELA_LOGIN } from "../constants/Rotas";
 import InputSenha, { Input } from "../components/Inputs";
-
+let verificou = false
 export default function TelaLogin({ navigation }) {
     const [email, setEmail] = React.useState("")
     const [senha, setSenha] = React.useState("")
@@ -29,19 +29,32 @@ export default function TelaLogin({ navigation }) {
 
     React.useEffect(() => {
         estaLogado()
-
     }, [isFocused])
+
+    function limpar(){
+        setEmail("")
+        setSenha("")
+    }
 
     function estaLogado() {
         onAuthStateChanged(auth, (user) => {
             if (user) {
+                verificou = false
                 setCarregando(true)
+                navigation.navigate("home2")
+                limpar()
                 // User is signed in, see docs for a list of available properties
                 // https://firebase.google.com/docs/reference/js/auth.user
-
                 // ...
             } else {
                 console.log("não logado: ")
+                if (verificou) {
+
+                } else {
+                    navigation.navigate(TELA_LOGIN)
+                    verificou = true
+                }
+
                 setCarregando(false)
                 // User is signed out
                 // ...
@@ -137,8 +150,6 @@ export default function TelaLogin({ navigation }) {
 
         </Layout2>
 
-
-
     )
 }
 
@@ -195,7 +206,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
 
     },
-    
+
     imagemIcon: {
         width: 50,
         height: 50,
