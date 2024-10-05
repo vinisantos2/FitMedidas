@@ -8,7 +8,7 @@ import { TABELA_USERS } from "../constants/constantsFirebase";
 import Layout2 from "../components/Layout2";
 import GestorDados from "../firebase/Firestore";
 import InputSenha, { Input } from "../components/Inputs";
-import MessageErro from "../components/MessageErro";
+import MenssagemErro from "../components/MessageErro";
 
 
 export default function TelaCadastro({ navigation }) {
@@ -55,7 +55,7 @@ export default function TelaCadastro({ navigation }) {
     }
     return (
         <Layout2>
-            <MessageErro msgErro={msgErro} />
+            <MenssagemErro msgErro={msgErro} />
             <View style={styles.viewForm}>
                 <Input placeholder={"Nome"} value={nome} setValue={setNome} />
                 <Input placeholder={"E-mail"} value={email} setValue={setEmail} keyboardType="email-address" />

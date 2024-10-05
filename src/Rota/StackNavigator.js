@@ -24,3 +24,11 @@ export function StackNavigator2() {
         </Stack.Navigator>
     )
 }
+export function StackTeste() {
+    return (
+        <Stack.Navigator  initialRouteName={"Telacadastro"}>
+            <Stack.Screen name={"Telacadastro"} component={TelaCadastro} />
+            <Stack.Screen name={TELA_EDITAR_DESEMPENHO} component={CadastrarDesempenho} />
+        </Stack.Navigator>
+    )
+}

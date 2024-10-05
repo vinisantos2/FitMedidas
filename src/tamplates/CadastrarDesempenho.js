@@ -24,7 +24,7 @@ import ItemViewMedida from "../components/ItemViewMedida";
 
 import { getPassword } from "../utils/Ultils";
 import { useIsFocused } from "@react-navigation/native";
-import MessageErro from "../components/MessageErro";
+import MenssagemErro from "../components/MessageErro";
 import { auth } from "../firebase/firebaseConfig";
 import { BODY, LEGENDA } from "../constants/Cores";
 import ModallApp from "../components/Modal";
@@ -207,7 +207,7 @@ export default function CadastrarDesempenho({ route, navigation }) {
     return (
         <Layout refreshing={false} onRefresh={false} >
 
-            {erro ? (<MessageErro msgErro={msgErro} />) : ""}
+            {erro ? (<MenssagemErro msgErro={msgErro} />) : ""}
             <View style={STYLES.legenda} >
                 <TextView value={"Dados pessoais"} />
             </View>

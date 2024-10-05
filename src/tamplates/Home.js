@@ -233,6 +233,9 @@ export default function Home({ navigation }) {
                 <TouchableOpacity onPress={() => createTwoButtonAlert("RQC", RQC)} >
                     <Ionicons name="warning-outline" size={30} />
                 </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("s")} >
+                    <Ionicons name="warning-outline" size={30} />
+                </TouchableOpacity>
             </View>
 
         </Layout>

@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, } from 'react-native';
 import { NavigationContainer, } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BRANCO, LEGENDA, } from './src/constants/Cores';
 import React from 'react';
 import { auth } from './src/firebase/firebaseConfig';
@@ -10,11 +9,9 @@ import { onAuthStateChanged } from 'firebase/auth';
 import DrawerNavigator from './src/Rota/DrawerNavigator';
 import StackNavigator from './src/Rota/StackNavigator';
 
-const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [logado, setLogado] = React.useState(false)
-
 
   React.useEffect(() => {
     estaLogado()

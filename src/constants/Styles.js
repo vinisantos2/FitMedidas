@@ -48,8 +48,6 @@ export const STYLES = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-
-
     },
 
     dataInput: {

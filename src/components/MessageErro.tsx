@@ -1,19 +1,29 @@
 
 
 import React from "react";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { DARK, VERMELHO } from "../constants/Cores";
+import { BRANCO, DARK, VERMELHO } from "../constants/Cores";
 import TextView from "./TextView";
 
 
-export default function MessageErro({ msgErro }) {
+export default function MenssagemErro({ msgErro }) {
 
     return (
-        <View style={{ alignItems: "center", backgroundColor: DARK }}>
-            <TextView value={msgErro} cor={VERMELHO} />
+        <View style={styles.content}>
+            <TextView value={msgErro} cor={BRANCO} />
         </View>
     )
 
 
 }
+
+const styles = StyleSheet.create({
+    content: {
+        marginVertical: 5,
+        alignItems: "center",
+        backgroundColor: VERMELHO,
+        padding: 10,
+        borderRadius: 10
+    }
+})

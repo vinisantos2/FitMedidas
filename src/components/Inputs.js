@@ -8,7 +8,7 @@ export default function InputSenha({ placeholder, setView, view = false, value, 
 
     return (
         <View style={{ width: "100%", justifyContent: "center", alignItems: "center" }}>
-            <TextInput placeholder={placeholder} keyboardType="ascii-capable" autoCapitalize={"none"} style={[styles.input, styles.text]} secureTextEntry={view} value={value} onChangeText={setValue} />
+            <TextInput  placeholder={placeholder} keyboardType="ascii-capable" autoCapitalize={"none"} style={[styles.input, styles.text]} secureTextEntry={view} value={value} onChangeText={setValue} />
             <Ionicons onPress={() => setView(!view)} name="eye-sharp" size={25} style={{ position: "absolute", alignSelf: "flex-end" }} />
         </View>
 
@@ -21,7 +21,7 @@ export function Input({ placeholder, value, setValue, keyboardType = "ascii-capa
 
     return (
         <View style={{ width: "100%", justifyContent: "center", alignItems: "center" }}>
-            <TextInput placeholder={placeholder} keyboardType={keyboardType} style={[styles.input, styles.text]} value={value} onChangeText={setValue} type={"ascii-capable"} />
+            <TextInput placeholder={placeholder}  keyboardType={keyboardType} style={[styles.input, styles.text]} value={value} onChangeText={setValue} />
         </View>
 
     )

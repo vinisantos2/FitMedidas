@@ -7,12 +7,36 @@ import Layout2 from "../components/Layout2";
 import { ModallCarregando } from "../components/ModalCarregando";
 import { TELA_CADASTRO } from "../constants/Rotas";
 import { Input } from "../components/Inputs";
-import MessageErro from "../components/MessageErro";
+import MenssagemErro from "../components/MessageErro";
+import { auth } from "../firebase/firebaseConfig";
+import { sendPasswordResetEmail } from "firebase/auth";
 
 export default function TelaEsqueciSenha({ navigation }) {
     const [email, setEmail] = React.useState("")
     const [carregando, setCarregando] = React.useState(false)
     const [msgErro, setMsgErro] = React.useState("")
+
+    function redefinirSenha() {
+        const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (reg.test(email) === false) {
+            setMsgErro("E-mail invalido")
+            return
+        }
+        if (email.length < 7) {
+            setMsgErro("E-mail invalido")
+            return
+        }
+
+        sendPasswordResetEmail(auth, email,).then(resp => {
+            console.log("Resp: " + resp)
+            setMsgErro("Se houver alguma conta vinculada a esse e-mail você recebera um link para redefinir")
+            setEmail("")
+        }).catch((error) => {
+            console.log("Erro" + error)
+            setMsgErro(error)
+        });
+
+    }
     return (
 
         <Layout2>
@@ -22,17 +46,16 @@ export default function TelaEsqueciSenha({ navigation }) {
                 <Input placeholder={"E-mail"} value={email} setValue={setEmail} keyboardType="email-address" />
             </View>
 
-
             <View style={styles.viewBotao}>
 
-                <TouchableOpacity onPress={() => navigation.navigate(TELA_CADASTRO)} style={styles.botao}>
+                <TouchableOpacity onPress={() => redefinirSenha()} style={styles.botao}>
                     <TextView fontSize={25} value="Enviar" />
                 </TouchableOpacity>
 
             </View>
 
             <View style={styles.viewLink}>
-                <MessageErro msgErro={msgErro} />
+                <MenssagemErro msgErro={msgErro} />
             </View>
 
         </Layout2>
@@ -43,9 +66,9 @@ export default function TelaEsqueciSenha({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-   
-   
-  
+
+
+
     viewForm: {
         marginTop: "10%",
         alignItems: "center",
@@ -53,7 +76,7 @@ const styles = StyleSheet.create({
 
 
     },
-    
+
     viewBotao: {
         marginTop: "10%",
         alignItems: "center",
@@ -82,6 +105,6 @@ const styles = StyleSheet.create({
         fontSize: 25,
         color: "#fff"
     },
-   
+
 
 })

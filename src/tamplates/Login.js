@@ -18,18 +18,19 @@ import Layout2 from "../components/Layout2";
 import { ModallCarregando } from "../components/ModalCarregando";
 import { TELA_CADASTRO, TELA_ESQUECI_SENHA } from "../constants/Rotas";
 import InputSenha, { Input } from "../components/Inputs";
+import MenssagemErro from "../components/MessageErro";
 
 export default function TelaLogin({ navigation }) {
     const [email, setEmail] = React.useState("")
     const [senha, setSenha] = React.useState("")
     const [viewSenha, setViewSenha] = React.useState(true)
     const [msgErro, setMsgErro] = React.useState("")
+    const [erro, setErro] = React.useState(false)
     const [carregando, setCarregando] = React.useState(true)
     const isFocused = useIsFocused()
 
     React.useEffect(() => {
-        estaLogado()
-
+        
     }, [isFocused])
 
     function estaLogado() {
@@ -87,7 +88,8 @@ export default function TelaLogin({ navigation }) {
             .catch((error) => {
                 // setCarregando(false)
                 setCarregando(false)
-                setMsgErro("Login ou senha errado")
+                setMsgErro("Login ou senha incorreto")
+                setErro(true)
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 console.log("Erro: " + errorMessage)
@@ -131,9 +133,7 @@ export default function TelaLogin({ navigation }) {
                 </TouchableOpacity>
             </View>
 
-            <View style={styles.viewLink}>
-                <TextView value={msgErro} cor={VERMELHO} />
-            </View>
+            {erro ? <MenssagemErro msgErro={msgErro} /> : null}
 
         </Layout2>
 
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
 
     },
-    
+
     imagemIcon: {
         width: 50,
         height: 50,
