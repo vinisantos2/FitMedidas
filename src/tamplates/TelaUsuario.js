@@ -20,7 +20,8 @@ export default function TelaUsuario({ navigation }) {
         setDoc(ref, { nome: nome, })
     }
     return (
-        <Layout2>
+
+        <Layout>
             <View style={styles.viewForm}>
                 <TextInput placeholder={"nome"} style={[styles.input, styles.text]} value={nome} onChangeText={setNome} keyboardType="ascii-capable" />
                 <TextInput placeholder="E-mail" style={[styles.input, styles.text]} value={email} onChangeText={setEmail} keyboardType="ascii-capable" />
@@ -43,7 +44,7 @@ export default function TelaUsuario({ navigation }) {
 
             </View>
 
-        </Layout2>
+        </Layout>
 
     )
 }

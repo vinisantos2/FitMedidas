@@ -67,6 +67,4 @@ export const STYLES = StyleSheet.create({
         alignContent: "center"
     }
 
-
-
 })

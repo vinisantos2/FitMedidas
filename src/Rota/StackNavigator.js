@@ -18,6 +18,7 @@ export default function StackNavigator() {
             <Stack.Screen options={{ headerShown: false }} name={"home2"} component={DrawerNavigator} />
             <Stack.Screen name={TELA_CADASTRO} component={TelaCadastro} />
             <Stack.Screen name={TELA_ESQUECI_SENHA} component={TelaEsqueciSenha} />
+            <Stack.Screen name={TELA_EDITAR_DESEMPENHO} component={CadastrarDesempenho} />
         </Stack.Navigator>
     )
 }
@@ -73,11 +74,4 @@ function DrawerNavigator() {
         </Drawer.Navigator>
     )
 }
-export function StackTeste() {
-    return (
-        <Stack.Navigator  initialRouteName={"Telacadastro"}>
-            <Stack.Screen name={"Telacadastro"} component={TelaCadastro} />
-            <Stack.Screen name={TELA_EDITAR_DESEMPENHO} component={CadastrarDesempenho} />
-        </Stack.Navigator>
-    )
-}
+

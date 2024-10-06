@@ -5,10 +5,10 @@ import TextView from "../components/TextView";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import { TABELA_USERS } from "../constants/constantsFirebase";
-import Layout2 from "../components/Layout2";
 import GestorDados from "../firebase/Firestore";
 import InputSenha, { Input } from "../components/Inputs";
 import MenssagemErro from "../components/MessageErro";
+import Layout from "../components/Layout";
 
 
 export default function TelaCadastro({ navigation }) {
@@ -19,17 +19,22 @@ export default function TelaCadastro({ navigation }) {
     const [senhaC, setSenhaC] = React.useState("")
     const [viewSenhaC, setViewSenhaC] = React.useState(true)
     const [msgErro, setMsgErro] = React.useState("")
+    const [erro, setErro] = React.useState(false)
     const gestor = new GestorDados()
 
     function criarUsuario() {
         if (nome.length < 1) {
             setMsgErro("Campo nome invalido")
+
+            setErro(true)
             return
         } else if (senha.length < 5) {
             setMsgErro("Campo senha tem que ter mais de 5 caracter")
+            setErro(true)
             return
         } else if (senha !== senhaC) {
             setMsgErro("Senhas diferentes")
+            setErro(true)
             return
         }
         createUserWithEmailAndPassword(auth, email, senha)
@@ -54,8 +59,8 @@ export default function TelaCadastro({ navigation }) {
         gestor.adicionarUsuer(TABELA_USERS, docData)
     }
     return (
-        <Layout2>
-            <MenssagemErro msgErro={msgErro} />
+        <Layout>
+            {erro ? <MenssagemErro msgErro={msgErro} /> : null}
             <View style={styles.viewForm}>
                 <Input placeholder={"Nome"} value={nome} setValue={setNome} />
                 <Input placeholder={"E-mail"} value={email} setValue={setEmail} keyboardType="email-address" />
@@ -77,15 +82,12 @@ export default function TelaCadastro({ navigation }) {
 
             </View>
 
-        </Layout2>
+        </Layout>
 
     )
 }
 
 const styles = StyleSheet.create({
-    content: {
-        flex: 1,
-    },
     viewBotoes: {
         marginTop: "10%",
         justifyContent: "space-around",
@@ -95,8 +97,8 @@ const styles = StyleSheet.create({
     viewForm: {
         marginTop: "10%",
         alignItems: "center",
-        width: "90%"
-
+        width: "90%",
+        alignSelf: "center"
     },
     input: {
         width: "100%",
@@ -112,13 +114,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
 
-    viewLink: {
-        marginTop: "5%",
-        flexDirection: "row",
-        justifyContent: "center"
-
-
-    },
     botao: {
         backgroundColor: "blue",
         alignItems: "center",
@@ -130,20 +125,9 @@ const styles = StyleSheet.create({
 
 
     },
-    textBotao: {
-        fontSize: 25,
-        color: "#fff"
-    },
-    textLink: {
-        color: "#000",
-        borderBottomColor: "#00A3F7",
-        fontSize: 15,
 
-    },
-    text: {
-        fontSize: 20,
-        color: "#fff"
-    },
+
+
     imagemIcon: {
         width: 50,
         height: 50,

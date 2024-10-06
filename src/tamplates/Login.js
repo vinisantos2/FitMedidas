@@ -13,11 +13,11 @@ import {
 
 } from "firebase/auth";
 import { useIsFocused } from "@react-navigation/native";
-import { VERMELHO } from "../constants/Cores";
-import Layout2 from "../components/Layout2";
 import { ModallCarregando } from "../components/ModalCarregando";
 import { TELA_CADASTRO, TELA_ESQUECI_SENHA, TELA_LOGIN } from "../constants/Rotas";
 import InputSenha, { Input } from "../components/Inputs";
+import MenssagemErro from "../components/MessageErro";
+import Layout from "../components/Layout";
 let verificou = false
 export default function TelaLogin({ navigation }) {
     const [email, setEmail] = React.useState("")
@@ -32,16 +32,18 @@ export default function TelaLogin({ navigation }) {
         estaLogado()
     }, [isFocused])
 
-    function limpar(){
+    function limpar() {
         setEmail("")
         setSenha("")
+        setErro("")
+        setMsgErro("")
     }
 
     function estaLogado() {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 verificou = false
-                setCarregando(true)
+                setCarregando(false)
                 navigation.navigate("home2")
                 limpar()
                 // User is signed in, see docs for a list of available properties
@@ -113,7 +115,7 @@ export default function TelaLogin({ navigation }) {
 
     return (
 
-        <Layout2>
+        <Layout>
             {carregando ? (<ModallCarregando />) : ""}
 
             <View style={styles.viewForm}>
@@ -148,7 +150,7 @@ export default function TelaLogin({ navigation }) {
 
             {erro ? <MenssagemErro msgErro={msgErro} /> : null}
 
-        </Layout2>
+        </Layout>
 
     )
 }
@@ -158,16 +160,11 @@ const styles = StyleSheet.create({
         flex: 1,
 
     },
-    viewBotoes: {
-        marginTop: "10%",
-        justifyContent: "space-around",
-        flexDirection: "row",
-
-    },
     viewForm: {
         marginTop: "10%",
         alignItems: "center",
-        width: "90%"
+        width: "90%",
+        alignSelf: "center"
 
 
     },
@@ -175,15 +172,14 @@ const styles = StyleSheet.create({
     viewBotao: {
         marginTop: "10%",
         alignItems: "center",
-        width: "90%"
+        width: "90%",
+        alignSelf: "center"
     },
 
     viewLink: {
         marginTop: "5%",
         flexDirection: "row",
-        justifyContent: "center"
-
-
+        alignSelf: "center"
     },
     botao: {
         backgroundColor: "blue",

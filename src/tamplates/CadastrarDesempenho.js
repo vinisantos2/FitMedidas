@@ -26,9 +26,9 @@ import { getPassword } from "../utils/Ultils";
 import { useIsFocused } from "@react-navigation/native";
 import MenssagemErro from "../components/MessageErro";
 import { auth } from "../firebase/firebaseConfig";
-import { BODY, LEGENDA } from "../constants/Cores";
+import { BODY } from "../constants/Cores";
 import ModallApp from "../components/Modal";
-import { Usuario, usuarioClass } from "../firebase/Usuario";
+import { usuarioClass } from "../firebase/Usuario";
 export default function CadastrarDesempenho({ route, navigation }) {
 
     const { medida } = route.params ? route.params : "";

@@ -9,7 +9,7 @@ import { ordenarDatas } from "../utils/Ultils";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { BODY, BRANCO, LEGENDA, VERMELHO } from "../constants/Cores.js";
 import TextView from "../components/TextView";
-import { TELA_EDITAR_DESEMPENHO } from "../constants/Rotas.js";
+import { TELA_CADASTRO, TELA_EDITAR_DESEMPENHO } from "../constants/Rotas.js";
 import { createTwoButtonAlert } from "../utils/AlertView.js";
 import { TABELA_DESEMPENHO } from "../constants/constantsFirebase.js";
 
@@ -63,7 +63,6 @@ export default function Historico({ navigation }) {
                         <View style={{ alignItems: "center" }}>
                             <ItemMedidas key={medida.AT_ID} medida={medida} navigation={navigation} />
                         </View>
-
                     )
                 }}
 
@@ -73,7 +72,7 @@ export default function Historico({ navigation }) {
                     return (
                         <View style={{ alignItems: "center" }}>
                             <View style={styles.rowBack}>
-                                <TouchableOpacity style={[styles.button, { backgroundColor: "blue" }]} onPress={() => navigation.navigate(TELA_EDITAR_DESEMPENHO, { medida: medida })} >
+                                <TouchableOpacity style={[styles.button, { backgroundColor: "blue" }]} onPress={() => navigation.navigate(TELA_EDITAR_DESEMPENHO,{medida})} >
                                     <TextView value={"Editar"} fontSize={20} />
                                 </TouchableOpacity>
 

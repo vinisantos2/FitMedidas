@@ -2,44 +2,47 @@ import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import TextView from "../components/TextView";
-
-import Layout2 from "../components/Layout2";
 import { ModallCarregando } from "../components/ModalCarregando";
-import { TELA_CADASTRO } from "../constants/Rotas";
 import { Input } from "../components/Inputs";
 import MenssagemErro from "../components/MessageErro";
 import { auth } from "../firebase/firebaseConfig";
 import { sendPasswordResetEmail } from "firebase/auth";
+import Layout from "../components/Layout";
 
 export default function TelaEsqueciSenha({ navigation }) {
     const [email, setEmail] = React.useState("")
     const [carregando, setCarregando] = React.useState(false)
     const [msgErro, setMsgErro] = React.useState("")
+    const [erro, setErro] = React.useState(false)
 
     function redefinirSenha() {
         const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (reg.test(email) === false) {
             setMsgErro("E-mail invalido")
+            setErro(true)
             return
         }
         if (email.length < 7) {
             setMsgErro("E-mail invalido")
+            setErro(true)
             return
         }
 
         sendPasswordResetEmail(auth, email,).then(resp => {
             console.log("Resp: " + resp)
             setMsgErro("Se houver alguma conta vinculada a esse e-mail você recebera um link para redefinir")
+            setErro(true)
             setEmail("")
         }).catch((error) => {
             console.log("Erro" + error)
+            setErro(true)
             setMsgErro(error)
         });
 
     }
     return (
 
-        <Layout2>
+        <Layout>
             {carregando ? (<ModallCarregando />) : ""}
 
             <View style={styles.viewForm}>
@@ -54,11 +57,9 @@ export default function TelaEsqueciSenha({ navigation }) {
 
             </View>
 
-            <View style={styles.viewLink}>
-                <MenssagemErro msgErro={msgErro} />
-            </View>
+            {erro ? <MenssagemErro msgErro={msgErro} /> : null}
 
-        </Layout2>
+        </Layout>
 
 
 

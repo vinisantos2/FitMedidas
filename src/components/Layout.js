@@ -1,7 +1,7 @@
 import React from "react";
-import { RefreshControl, StyleSheet, } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import { BODY, CORPRIMARY } from "../constants/Cores";
+import { RefreshControl, ScrollView, StyleSheet, } from "react-native";
+
+import { BODY } from "../constants/Cores";
 
 
 export default function Layout({ refreshing, onRefresh, ...outros }) {
@@ -12,7 +12,6 @@ export default function Layout({ refreshing, onRefresh, ...outros }) {
             style={styles.container} {...outros}  >
         </ScrollView>
     )
-
 
 }
 
